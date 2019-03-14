@@ -23,9 +23,12 @@ func Main() {
 	if !pathExists(kubeDir) {
 		_ = os.Mkdir(kubeDir, 0755)
 	}
-	var kubeconfig = filepath.Join(kubeDir, "config1")
+	var kubeconfig = filepath.Join(kubeDir, "config")
 	if !pathExists(kubeDir) {
 		_, _ = os.Create(kubeconfig)
+	} else {
+		fmt.Println("config  exists")
+		return
 	}
 	kubeConfigFileTem, e := os.OpenFile("config.template", os.O_CREATE|os.O_WRONLY, 0755)
 	if e != nil {
