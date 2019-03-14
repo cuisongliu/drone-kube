@@ -21,6 +21,8 @@ steps:
     daemon_off: false
     dockerfile: Dockerfile
     dry_run: true
+  repo: cuisongliu/drone-kube
+  tags: latest
 
 - name: publish-drone-kube
   image: plugins/docker:linux-amd64
