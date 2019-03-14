@@ -41,13 +41,6 @@ func Main() {
 	if !pathExists(kubeconfig) {
 		_, _ = os.Create(kubeconfig)
 	}
-	kubeConfigFileTem, e := os.OpenFile("config.template", os.O_CREATE|os.O_WRONLY, 0755)
-	if e != nil {
-		fmt.Println("config.template not exists", e)
-		defer kubeConfigFileTem.Close()
-		return
-	}
-	defer kubeConfigFileTem.Close()
 	_, err := copyFile("./config.dist", "./config.template", 1000)
 	if err != nil {
 		//err
@@ -93,11 +86,13 @@ func pathExists(path string) bool {
 func copyFile(dstName, srcName string, n int64) (written int64, err error) {
 	src, err := os.Open(srcName)
 	if err != nil {
+		fmt.Println(srcName+"  not exists", err)
 		return
 	}
 	defer src.Close()
 	dst, err := os.OpenFile(dstName, os.O_CREATE|os.O_WRONLY, 0755)
 	if err != nil {
+		fmt.Println(dstName+"  not exists", err)
 		return
 	}
 	defer dst.Close()
