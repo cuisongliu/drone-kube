@@ -6,4 +6,3 @@ RUN apk --no-cache add curl ca-certificates bash && \
     chmod +x /usr/local/bin/* && \
     rm -rf /var/cache/apk/*
 WORKDIR /
-RUN drone-kube config
