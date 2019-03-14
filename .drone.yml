@@ -13,6 +13,9 @@ steps:
      - go get -u golang.org/x/lint/golint
      - golint  -set_exit_status ./...
      - go build -o drone-kube
+  environment:
+    CGO_ENABLED: 0
+    GO111MODULE: on
 
 - name: dryrun-drone-kube
   pull: always
@@ -23,6 +26,8 @@ steps:
     dry_run: true
     repo: cuisongliu/drone-kube
     tags: latest
+  commands:
+    - docker run -ti --rm cuisongliu/drone-kube
 
 - name: publish-drone-kube
   image: plugins/docker:linux-amd64
