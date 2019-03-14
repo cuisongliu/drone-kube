@@ -16,8 +16,8 @@ package cmd
 
 import (
 	"github.com/cuisongliu/drone-kube/config"
+	"github.com/cuisongliu/drone-kube/tools"
 	"github.com/spf13/cobra"
-	"os"
 )
 
 // configCmd represents the config command
@@ -34,10 +34,10 @@ var configCmd = &cobra.Command{
 func init() {
 	rootCmd.AddCommand(configCmd)
 
-	kubeServer := os.Getenv("KUBE_SERVER")
-	kubeCa := os.Getenv("KUBE_CA")
-	kubeAdmin := os.Getenv("KUBE_ADMIN")
-	kubeAdminKey := os.Getenv("KUBE_ADMIN_KEY")
+	kubeServer := tools.Env("SERVER", "KUBE_SERVER", "PLUGIN_SERVER", "PLUGIN_KUBE_SERVER")
+	kubeCa := tools.Env("CA", "KUBE_CA", "PLUGIN_CA", "PLUGIN_KUBE_CA")
+	kubeAdmin := tools.Env("ADMIN", "KUBE_ADMIN", "PLUGIN_ADMIN", "PLUGIN_KUBE_ADMIN")
+	kubeAdminKey := tools.Env("ADMIN_KEY", "KUBE_ADMIN_KEY", "PLUGIN_ADMIN_KEY", "PLUGIN_KUBE_ADMIN_KEY")
 
 	configCmd.Flags().StringVarP(&config.KubeServer, "server", "s", kubeServer, "~/.kube/config  server")
 	//certificate-authority ca.pem
