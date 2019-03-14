@@ -43,7 +43,7 @@ func Main() {
 	}
 	kubeConfigFileTem, e := os.OpenFile("config.template", os.O_CREATE|os.O_WRONLY, 0755)
 	if e != nil {
-		fmt.Println("config.template not exists")
+		fmt.Println("config.template not exists", e)
 		defer kubeConfigFileTem.Close()
 		return
 	}
@@ -51,14 +51,14 @@ func Main() {
 	_, err := copyFile("./config.dist", "./config.template", 1000)
 	if err != nil {
 		//err
-		fmt.Println("config.template copy failed")
+		fmt.Println("config.template copy failed", err)
 		return
 	}
 	//read file content
-	buf, err := ioutil.ReadFile("config.dist")
+	buf, err := ioutil.ReadFile("./config.dist")
 	if err != nil {
 		//err
-		fmt.Println("read config.dist failed")
+		fmt.Println("read config.dist failed", err)
 		return
 	}
 	content := string(buf)
@@ -72,7 +72,7 @@ func Main() {
 	err = os.Remove("config.dist")
 	if err != nil {
 		//err
-		fmt.Println("config.dist del failed")
+		fmt.Println("config.dist del failed", err)
 		return
 	}
 }
