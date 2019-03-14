@@ -9,26 +9,25 @@ import (
 	"strings"
 )
 
-var template = []byte(`
-apiVersion: v1
+var template = []byte(`apiVersion: v1
 clusters:
 - cluster:
-certificate-authority-data: {{k8s_ca}}
-server: {{k8s_server}}
-name: kubernetes
+    certificate-authority-data: {{k8s_ca}}
+    server: {{k8s_server}}
+  name: kubernetes
 contexts:
 - context:
-cluster: kubernetes
-user: kubernetes-admin
-name: kubernetes-admin@kubernetes
+    cluster: kubernetes
+    user: kubernetes-admin
+  name: kubernetes-admin@kubernetes
 current-context: kubernetes-admin@kubernetes
 kind: Config
 preferences: {}
 users:
 - name: kubernetes-admin
-user:
-client-certificate-data: {{k8s_admin}}
-client-key-data: {{k8s_admin_key}}`)
+  user:
+    client-certificate-data: {{k8s_admin}}
+    client-key-data: {{k8s_admin_key}}`)
 
 //var is global var
 var (
@@ -76,17 +75,10 @@ func Main() {
 
 	fmt.Println(newContent)
 	//write file
-	kubeconfigFile, err := os.OpenFile(kubeconfig, os.O_CREATE|os.O_WRONLY, 0755)
+	kubeconfigFile, _ := os.OpenFile(kubeconfig, os.O_CREATE|os.O_WRONLY, 0755)
 	//写入字符串
 	kubeconfigFile.WriteString(newContent)
 	defer kubeconfigFile.Close()
-
-	err = os.Remove("config.dist")
-	if err != nil {
-		//err
-		fmt.Println("config.dist del failed", err)
-		return
-	}
 }
 
 //pathExists is tools for file
