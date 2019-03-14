@@ -5,6 +5,7 @@ import (
 	"os"
 )
 
+//Env is get env str
 func Env(env ...string) string {
 	var returnVar string
 	if len(env) != 0 {
