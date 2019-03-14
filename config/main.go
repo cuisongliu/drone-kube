@@ -41,7 +41,7 @@ func Main() {
 	if !pathExists(kubeconfig) {
 		_, _ = os.Create(kubeconfig)
 	}
-	_, err := copyFile("config.dist", "config.template")
+	err := copyFile("config.dist", "config.template")
 	if err != nil {
 		//err
 		fmt.Println("config.template copy failed", err)
@@ -83,22 +83,22 @@ func pathExists(path string) bool {
 }
 
 //copyFile is tools for file
-func copyFile(dstName, srcName string) (written int64, err error) {
+func copyFile(dstName, srcName string) (err error) {
 	src, err := os.Open(srcName)
 	if err != nil {
 		fmt.Println(srcName+"  not exists", err)
-		return _, err
+		return err
 	}
 	dst, err := os.OpenFile(dstName, os.O_CREATE|os.O_WRONLY, 0755)
 	if err != nil {
 		fmt.Println(dstName+"  not exists", err)
-		return _, err
+		return err
 	}
 	_, err = io.Copy(dst, src) //
 	if err != nil {
 		//err
 		fmt.Println("copyFile failed", srcName, dstName, err)
-		return _, err
+		return err
 	}
 	defer dst.Close()
 	defer src.Close()
