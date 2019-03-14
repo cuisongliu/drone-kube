@@ -87,14 +87,20 @@ func copyFile(dstName, srcName string) (written int64, err error) {
 	src, err := os.Open(srcName)
 	if err != nil {
 		fmt.Println(srcName+"  not exists", err)
-		return
+		return _, err
 	}
-	defer src.Close()
 	dst, err := os.OpenFile(dstName, os.O_CREATE|os.O_WRONLY, 0755)
 	if err != nil {
 		fmt.Println(dstName+"  not exists", err)
-		return
+		return _, err
+	}
+	_, err = io.Copy(dst, src) //
+	if err != nil {
+		//err
+		fmt.Println("copyFile failed", srcName, dstName, err)
+		return _, err
 	}
 	defer dst.Close()
-	return io.Copy(dst, src) //
+	defer src.Close()
+	return
 }
