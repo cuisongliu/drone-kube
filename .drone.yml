@@ -12,6 +12,7 @@ steps:
      - go get -v
      - go get -u golang.org/x/lint/golint
      - golint  -set_exit_status ./...
+     - go build -a -ldflags '-extldflags "-static"' .
      - go build -v -a -tags netgo -o drone-kube
   environment:
     CGO_ENABLED: 0
