@@ -13,8 +13,10 @@ import (
 //var is global var
 var (
 	KubeCa     string
-	KubeToken  string
 	KubeServer string
+
+	KubeAdmin    string
+	KubeAdminKey string
 )
 
 //Main is config command
@@ -24,12 +26,16 @@ func Main() {
 		fmt.Println("param server is null")
 		return
 	}
-	if KubeToken == "" {
-		fmt.Println("param token is null")
-		return
-	}
 	if KubeCa == "" {
 		fmt.Println("param ca is null")
+		return
+	}
+	if KubeAdmin == "" {
+		fmt.Println("param admin is null")
+		return
+	}
+	if KubeAdminKey == "" {
+		fmt.Println("param admin key is null")
 		return
 	}
 
@@ -56,11 +62,17 @@ func Main() {
 	}
 	content := string(buf)
 	//替换
-	newContent := strings.Replace(content, "{{server}}", KubeServer, -1)
-	newContent = strings.Replace(newContent, "{{token}}", KubeToken, -1)
-	newContent = strings.Replace(newContent, "{{ca}}", KubeCa, -1)
+	newContent := strings.Replace(content, "{{k8s_server}}", KubeServer, -1)
+	newContent = strings.Replace(newContent, "{{k8s_ca}}", KubeCa, -1)
+	newContent = strings.Replace(newContent, "{{k8s_admin}}", KubeAdmin, -1)
+	newContent = strings.Replace(newContent, "{{k8s_admin_key}}", KubeAdminKey, -1)
 
 	fmt.Println(newContent)
+	//write file
+	kubeconfigFile, err := os.OpenFile(kubeconfig, os.O_CREATE|os.O_WRONLY, 0755)
+	//写入字符串
+	kubeconfigFile.WriteString(newContent)
+	defer kubeconfigFile.Close()
 
 	err = os.Remove("config.dist")
 	if err != nil {

@@ -34,11 +34,16 @@ var configCmd = &cobra.Command{
 func init() {
 	rootCmd.AddCommand(configCmd)
 
-	kubeCa := os.Getenv("KUBE_CA")
-	kubeToken := os.Getenv("KUBE_TOKEN")
 	kubeServer := os.Getenv("KUBE_SERVER")
+	kubeCa := os.Getenv("KUBE_CA")
+	kubeAdmin := os.Getenv("KUBE_ADMIN")
+	kubeAdminKey := os.Getenv("KUBE_ADMIN_KEY")
 
-	configCmd.Flags().StringVarP(&config.KubeServer, "server", "s", kubeCa, "~/.kube/config  server")
-	configCmd.Flags().StringVarP(&config.KubeToken, "token", "t", kubeToken, "~/.kube/config certificate-authority-data")
-	configCmd.Flags().StringVarP(&config.KubeCa, "ca", "c", kubeServer, "~/.kube/config client-key-data")
+	configCmd.Flags().StringVarP(&config.KubeServer, "server", "s", kubeServer, "~/.kube/config  server")
+	//certificate-authority ca.pem
+	configCmd.Flags().StringVarP(&config.KubeCa, "ca", "c", kubeCa, "~/.kube/config certificate-authority-data")
+	//client-certificate admin.pem
+	configCmd.Flags().StringVarP(&config.KubeAdmin, "admin", "n", kubeAdmin, "~/.kube/config client-certificate")
+	//client-key admin-key.pem
+	configCmd.Flags().StringVarP(&config.KubeAdminKey, "admin-key", "k", kubeAdminKey, "~/.kube/config client-certificate")
 }
