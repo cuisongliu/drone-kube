@@ -48,7 +48,7 @@ func Main() {
 	newContent = strings.Replace(newContent, "{{token}}", KubeToken, -1)
 	newContent = strings.Replace(newContent, "{{ca}}", KubeCa, -1)
 
-	print(newContent)
+	fmt.Println(newContent)
 
 	err = os.Remove("config.dist")
 	if err != nil {

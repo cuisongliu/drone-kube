@@ -14,8 +14,16 @@ steps:
      - golint  -set_exit_status ./...
      - go build -o drone-kube
 
+- name: dryrun-drone-kube
+  pull: always
+  image: plugins/docker:linux-amd64
+  settings:
+    daemon_off: false
+    dockerfile: Dockerfile
+    dry_run: true
+
 - name: publish-drone-kube
-  image: plugins/docker
+  image: plugins/docker:linux-amd64
   settings:
     repo: cuisongliu/drone-kube
     tags: ${DRONE_TAG=latest}
