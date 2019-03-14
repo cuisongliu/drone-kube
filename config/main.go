@@ -96,5 +96,5 @@ func copyFile(dstName, srcName string, n int64) (written int64, err error) {
 		return
 	}
 	defer dst.Close()
-	return io.CopyN(dst, src, n) //
+	return io.Copy(dst, src) //
 }
