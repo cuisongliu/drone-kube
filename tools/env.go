@@ -8,7 +8,7 @@ import (
 //Env is get env str
 func Env(env ...string) string {
 	var returnVar string
-	if len(env) != 0 {
+	if len(env) == 0 {
 		fmt.Println(" env number is zero")
 		return ""
 	}
