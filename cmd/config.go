@@ -17,7 +17,9 @@ package cmd
 import (
 	"github.com/cuisongliu/drone-kube/config"
 	"github.com/spf13/cobra"
+	"os"
 )
+
 // configCmd represents the config command
 var configCmd = &cobra.Command{
 	Use:   "config",
@@ -29,13 +31,14 @@ var configCmd = &cobra.Command{
 	},
 }
 
-//var cfgFile string
-var name string
-var age int
-
 func init() {
 	rootCmd.AddCommand(configCmd)
 
-	configCmd.Flags().StringVarP(&name, "name", "n", "", "person's name")
-	configCmd.Flags().IntVarP(&age, "age", "a", 0, "person's age")
+	kubeCa := os.Getenv("KUBE_CA")
+	kubeToken := os.Getenv("KUBE_TOKEN")
+	kubeServer := os.Getenv("KUBE_SERVER")
+
+	configCmd.Flags().StringVarP(&config.KubeServer, "server", "s", kubeCa, "~/.kube/config  server")
+	configCmd.Flags().StringVarP(&config.KubeToken, "token", "t", kubeToken, "~/.kube/config certificate-authority-data")
+	configCmd.Flags().StringVarP(&config.KubeCa, "ca", "c", kubeServer, "~/.kube/config client-key-data")
 }
