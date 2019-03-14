@@ -3,12 +3,32 @@ package config
 import (
 	"fmt"
 	"io"
-	"io/ioutil"
 	"k8s.io/client-go/util/homedir"
 	"os"
 	"path/filepath"
 	"strings"
 )
+
+var template = []byte(`
+apiVersion: v1
+clusters:
+- cluster:
+certificate-authority-data: {{k8s_ca}}
+server: {{k8s_server}}
+name: kubernetes
+contexts:
+- context:
+cluster: kubernetes
+user: kubernetes-admin
+name: kubernetes-admin@kubernetes
+current-context: kubernetes-admin@kubernetes
+kind: Config
+preferences: {}
+users:
+- name: kubernetes-admin
+user:
+client-certificate-data: {{k8s_admin}}
+client-key-data: {{k8s_admin_key}}`)
 
 //var is global var
 var (
@@ -47,20 +67,7 @@ func Main() {
 	if !pathExists(kubeconfig) {
 		_, _ = os.Create(kubeconfig)
 	}
-	err := copyFile("config.dist", "config.template")
-	if err != nil {
-		//err
-		fmt.Println("config.template copy failed", err)
-		return
-	}
-	//read file content
-	buf, err := ioutil.ReadFile("config.dist")
-	if err != nil {
-		//err
-		fmt.Println("read config.dist failed", err)
-		return
-	}
-	content := string(buf)
+	content := string(template)
 	//替换
 	newContent := strings.Replace(content, "{{k8s_server}}", KubeServer, -1)
 	newContent = strings.Replace(newContent, "{{k8s_ca}}", KubeCa, -1)
