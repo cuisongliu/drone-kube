@@ -1,0 +1,15 @@
+kind: pipeline
+name: default
+
+workspace:
+   base: /go
+   path: src/github.com/cuisongliu/drone-kube/
+
+steps:
+- name: build-drone-kube
+  image: golang:1.10.8
+  commands:
+     - go get -v
+     - go get -u golang.org/x/lint/golint
+     - golint  -set_exit_status ./...
+     - go build -o drone-kube
