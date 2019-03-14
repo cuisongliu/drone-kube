@@ -7,7 +7,7 @@ workspace:
 
 steps:
 - name: build-drone-kube
-  image: golang:1.10.8
+  image: golang:1.11
   commands:
      - go get -v
      - go get -u golang.org/x/lint/golint
@@ -26,7 +26,8 @@ steps:
     dry_run: true
     repo: cuisongliu/drone-kube
     tags: latest
-
+  commands:
+    - drone-kube -h
 - name: publish-drone-kube
   image: plugins/docker:linux-amd64
   settings:
