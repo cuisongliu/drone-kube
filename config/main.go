@@ -19,6 +19,20 @@ var (
 
 //Main is config command
 func Main() {
+
+	if KubeServer == "" {
+		fmt.Println("param server is null")
+		return
+	}
+	if KubeToken == "" {
+		fmt.Println("param token is null")
+		return
+	}
+	if KubeCa == "" {
+		fmt.Println("param ca is null")
+		return
+	}
+
 	var kubeDir = filepath.Join(homedir.HomeDir(), ".kube")
 	if !pathExists(kubeDir) {
 		_ = os.Mkdir(kubeDir, 0755)
@@ -26,9 +40,6 @@ func Main() {
 	var kubeconfig = filepath.Join(kubeDir, "config")
 	if !pathExists(kubeconfig) {
 		_, _ = os.Create(kubeconfig)
-	} else {
-		fmt.Println("config location %v  exists", kubeconfig)
-		return
 	}
 	kubeConfigFileTem, e := os.OpenFile("config.template", os.O_CREATE|os.O_WRONLY, 0755)
 	if e != nil {
@@ -37,12 +48,17 @@ func Main() {
 		return
 	}
 	defer kubeConfigFileTem.Close()
-	_, _ = copyFile("./config.dist", "./config.template", 1000)
+	_, err := copyFile("./config.dist", "./config.template", 1000)
+	if err != nil {
+		//err
+		fmt.Println("config.template copy failed")
+		return
+	}
 	//read file content
 	buf, err := ioutil.ReadFile("config.dist")
 	if err != nil {
 		//err
-		fmt.Println("config copy failed")
+		fmt.Println("read config.dist failed")
 		return
 	}
 	content := string(buf)
