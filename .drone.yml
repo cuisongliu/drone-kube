@@ -13,3 +13,14 @@ steps:
      - go get -u golang.org/x/lint/golint
      - golint  -set_exit_status ./...
      - go build -o drone-kube
+
+- name: publish-drone-kube
+  image: plugins/docker
+  settings:
+    repo: cuisongliu/drone-kube
+    tags: ${DRONE_TAG=latest}
+    username:
+      from_secret: docker-hub-user
+    dockerfile: Dockerfile
+    password:
+      from_secret: docker-hub-pass
