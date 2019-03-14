@@ -7,7 +7,7 @@ workspace:
 
 steps:
 - name: build-drone-kube
-  image: golang:1.11
+  image: golang:1.11-alpine
   commands:
      - go get -v
      - go get -u golang.org/x/lint/golint
