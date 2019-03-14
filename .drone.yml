@@ -7,13 +7,12 @@ workspace:
 
 steps:
 - name: build-drone-kube
-  image: golang:1.11
+  image: golang:1.10
   commands:
      - go get -v
      - go get -u golang.org/x/lint/golint
      - golint  -set_exit_status ./...
      - go build -a -ldflags '-extldflags "-static"' .
-     - go build -v -a -tags netgo -o drone-kube
   environment:
     CGO_ENABLED: 0
     GO111MODULE: on
