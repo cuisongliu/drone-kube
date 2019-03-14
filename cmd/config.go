@@ -43,7 +43,7 @@ func init() {
 	//certificate-authority ca.pem
 	configCmd.Flags().StringVarP(&config.KubeCa, "ca", "c", kubeCa, "~/.kube/config certificate-authority-data")
 	//client-certificate admin.pem
-	configCmd.Flags().StringVarP(&config.KubeAdmin, "admin", "n", kubeAdmin, "~/.kube/config client-certificate")
+	configCmd.Flags().StringVarP(&config.KubeAdmin, "admin", "n", kubeAdmin, "~/.kube/config client-certificate-data")
 	//client-key admin-key.pem
-	configCmd.Flags().StringVarP(&config.KubeAdminKey, "admin-key", "k", kubeAdminKey, "~/.kube/config client-certificate")
+	configCmd.Flags().StringVarP(&config.KubeAdminKey, "admin-key", "k", kubeAdminKey, "~/.kube/config client-key-data")
 }
