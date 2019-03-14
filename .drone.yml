@@ -26,8 +26,6 @@ steps:
     dry_run: true
     repo: cuisongliu/drone-kube
     tags: latest
-  commands:
-    - docker run -ti --rm cuisongliu/drone-kube
 
 - name: publish-drone-kube
   image: plugins/docker:linux-amd64
