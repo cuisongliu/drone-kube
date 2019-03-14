@@ -41,14 +41,14 @@ func Main() {
 	if !pathExists(kubeconfig) {
 		_, _ = os.Create(kubeconfig)
 	}
-	_, err := copyFile("./config.dist", "./config.template", 1000)
+	_, err := copyFile("config.dist", "config.template", 1000)
 	if err != nil {
 		//err
 		fmt.Println("config.template copy failed", err)
 		return
 	}
 	//read file content
-	buf, err := ioutil.ReadFile("./config.dist")
+	buf, err := ioutil.ReadFile("config.dist")
 	if err != nil {
 		//err
 		fmt.Println("read config.dist failed", err)
