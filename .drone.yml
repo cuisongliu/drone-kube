@@ -28,9 +28,7 @@ steps:
     password:
       from_secret: docker-hub-pass
 
-
 - name: dryrun-drone-kube
-  pull: always
   image: cuisongliu/drone-kube:drone-test
   detach: true
 
