@@ -21,7 +21,7 @@ steps:
   image: plugins/docker:linux-amd64
   settings:
     repo: cuisongliu/drone-kube
-    tags: drone-test
+    tags: ${DRONE_TEST_TAG=drone-test}
     username:
       from_secret: docker-hub-user
     dockerfile: Dockerfile
