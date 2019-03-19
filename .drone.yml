@@ -17,7 +17,7 @@ steps:
     CGO_ENABLED: 0
     GO111MODULE: on
 
-- name: publish-drone-kube
+- name: test-pubsh-drone-kube
   image: plugins/docker:linux-amd64
   settings:
     repo: cuisongliu/drone-kube
