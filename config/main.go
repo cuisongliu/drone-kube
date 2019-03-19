@@ -2,6 +2,7 @@ package config
 
 import (
 	"fmt"
+	"github.com/wonderivan/logger"
 	"io"
 	"k8s.io/client-go/util/homedir"
 	"os"
@@ -42,19 +43,19 @@ var (
 func Main() {
 
 	if KubeServer == "" {
-		fmt.Println("param server is null")
+		logger.Error("param server is null")
 		return
 	}
 	if KubeCa == "" {
-		fmt.Println("param ca is null")
+		logger.Error("param ca is null")
 		return
 	}
 	if KubeAdmin == "" {
-		fmt.Println("param admin is null")
+		logger.Error("param admin is null")
 		return
 	}
 	if KubeAdminKey == "" {
-		fmt.Println("param admin key is null")
+		logger.Error("param admin key is null")
 		return
 	}
 
@@ -73,7 +74,7 @@ func Main() {
 	newContent = strings.Replace(newContent, "{{k8s_admin}}", KubeAdmin, -1)
 	newContent = strings.Replace(newContent, "{{k8s_admin_key}}", KubeAdminKey, -1)
 
-	fmt.Println(newContent)
+	logger.Debug(newContent)
 	//write file
 	kubeconfigFile, _ := os.OpenFile(kubeconfig, os.O_CREATE|os.O_WRONLY, 0755)
 	//写入字符串
@@ -97,12 +98,12 @@ func pathExists(path string) bool {
 func copyFile(dstName, srcName string) (err error) {
 	src, err := os.Open(srcName)
 	if err != nil {
-		fmt.Println(srcName+"  not exists", err)
+		logger.Error(srcName+"  not exists", err)
 		return err
 	}
 	dst, err := os.OpenFile(dstName, os.O_CREATE|os.O_WRONLY, 0755)
 	if err != nil {
-		fmt.Println(dstName+"  not exists", err)
+		logger.Error(dstName+"  not exists", err)
 		return err
 	}
 	_, err = io.Copy(dst, src) //
