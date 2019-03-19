@@ -32,6 +32,7 @@ steps:
   image: cuisongliu/drone-kube:drone-test
   commands:
     - drone-kube -h
+    - env
 
 - name: publish-drone-kube
   image: plugins/docker:linux-amd64
