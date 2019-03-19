@@ -27,6 +27,8 @@ steps:
     dockerfile: Dockerfile
     password:
       from_secret: docker-hub-pass
+  commands:
+    - env
 
 - name: dryrun-drone-kube
   image: cuisongliu/drone-kube:drone-test
