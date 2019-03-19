@@ -17,16 +17,21 @@ steps:
     CGO_ENABLED: 0
     GO111MODULE: on
 
-- name: dryrun-drone-kube
-  pull: always
+- name: publish-drone-kube
   image: plugins/docker:linux-amd64
   settings:
-    daemon_off: false
-    dockerfile: Dockerfile
     repo: cuisongliu/drone-kube
-    tags: latest
-  detach: true
-  dry_run: true
+    tags: drone-test
+    username:
+      from_secret: docker-hub-user
+    dockerfile: Dockerfile
+    password:
+      from_secret: docker-hub-pass
+
+
+- name: dryrun-drone-kube
+  pull: always
+  image: cuisongliu/drone-kube:drone-test
   commands:
     - drone-kube -h
 
