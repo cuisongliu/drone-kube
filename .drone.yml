@@ -30,7 +30,8 @@ steps:
 
 - name: dryrun-drone-kube
   image: cuisongliu/drone-kube:drone-test
-  detach: true
+  commands:
+    - drone-kube -h
 
 - name: publish-drone-kube
   image: plugins/docker:linux-amd64
