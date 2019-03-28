@@ -28,13 +28,14 @@ steps:
     password:
       from_secret: docker-hub-pass
   commands:
-    - env
+    - env | grep TAGS >> .env
 
 - name: dryrun-drone-kube
   image: cuisongliu/drone-kube:drone-test
   commands:
     - drone-kube -h
     - env
+    - cat .env
 
 - name: publish-drone-kube
   image: plugins/docker:linux-amd64
