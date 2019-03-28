@@ -21,13 +21,14 @@ steps:
   image: plugins/docker:linux-amd64
   settings:
     repo: cuisongliu/drone-kube
-    tags: ${DRONE_TEST_TAG=drone-test}
+    tags: ${DRONE_TAG=drone-test}
     username:
       from_secret: docker-hub-user
     dockerfile: Dockerfile
     password:
       from_secret: docker-hub-pass
   commands:
+    - env
     - env | grep TAGS >> .env
 
 - name: dryrun-drone-kube
