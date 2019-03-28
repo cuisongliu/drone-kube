@@ -6,7 +6,7 @@
 
 > config kubeconfig, from env generator /root/.kube/config ,the user controller k8s cluster
 
-## command generator 
+### command generator 
 
 
 ```bash
@@ -69,3 +69,46 @@
         - sleep 15
         - kubectl create -f deploy/deploy.yaml || true
     ```
+
+## template
+
+> deploy dir is template. need replace env.
+
+### command template 
+
+
+```bash
+ drone-kube template  --deploy=xxx  
+```
+
+### use docker  template
+
+```bash
+ docker run -ti --network=host -e CONTAINER_IMAGES1=alpine   cuisongliu/drone-kube bash 
+ drone-kube template --deploy=xxx
+```
+
+### use drone template 
+
+```yaml
+- name: deploy-font
+  image: cuisongliu/drone-kube
+  settings:
+    server:
+      from_secret: k8s-server
+    ca:
+      from_secret: k8s-ca
+    admin:
+      from_secret: k8s-admin
+    admin_key:
+      from_secret: k8s-admin-key
+    template_tag1: alpine
+    template_tag2: ${DRONE_TAG=drone-test}
+  commands:
+    - drone-kube config
+    - drone-kube template  >> /dev/null
+    - kubectl delete -f deploy/deploy.yaml || true
+    - sleep 15
+    - kubectl create -f deploy/deploy.yaml || true
+    
+```

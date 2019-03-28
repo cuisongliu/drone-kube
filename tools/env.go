@@ -21,3 +21,9 @@ func Env(env ...string) string {
 	}
 	return ""
 }
+
+//EnvFromTemplate is get env str from template, e.g {{TEMPLATE_TAG1}} -> TEMPLATE_TAG1 , PLUGIN_TEMPLATE_TAG1
+func EnvFromTemplate(env string) string {
+
+	return ""
+}
