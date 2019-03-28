@@ -1,7 +1,9 @@
 package config
 
 import (
+	"bufio"
 	"github.com/wonderivan/logger"
+	"io"
 	"io/ioutil"
 	"os"
 )
@@ -19,6 +21,22 @@ func Main() {
 	if len(files) == 0 {
 		logger.Error("the dir is ", KubeDeployDir, ",empty.")
 		return
+	}
+	var innerFile *os.File
+	defer innerFile.Close()
+	for _, file := range files {
+		logger.Info("file name is :", file.Name())
+		innerFile, err := os.Open(KubeDeployDir + string(os.PathSeparator) + file.Name())
+		if nil == err {
+			buff := bufio.NewReader(innerFile)
+			for {
+				line, err := buff.ReadString('\n')
+				if err != nil || io.EOF == err {
+					break
+				}
+				logger.Debug("file line contant is :", line)
+			}
+		}
 	}
 
 }

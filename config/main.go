@@ -78,7 +78,7 @@ func Main() {
 	//write file
 	kubeconfigFile, _ := os.OpenFile(kubeconfig, os.O_CREATE|os.O_WRONLY, 0755)
 	//写入字符串
-	kubeconfigFile.WriteString(newContent)
+	_, _ = kubeconfigFile.WriteString(newContent)
 	defer kubeconfigFile.Close()
 }
 
