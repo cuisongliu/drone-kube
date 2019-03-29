@@ -8,17 +8,6 @@ import (
 )
 
 func TestTemplate(t *testing.T) {
-	//temp, err := template.ParseFiles("./aa.html")
-	//if err != nil {
-	//	t.Error("Error ParseFiles..")
-	//}
-	//_ = temp.Execute(os.Stdout, map[string]string{"fff": "My title", "ddd": "Hi this is my body"})
-	type person struct {
-		Id      int
-		Name    string
-		Country string
-	}
-
 	//liumiaocn := person{Id: 1001, Name: "liumiaocn", Country: "China"}
 	var envMap map[string]string
 	envMap = EnvFromDrone()

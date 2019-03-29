@@ -23,7 +23,7 @@ func Env(env ...string) string {
 	return ""
 }
 
-//EnvFromTemplate is get env str from system and drone, e.g {{.TEMPLATE_TAG1}} -> TEMPLATE_TAG1 , PLUGIN_TEMPLATE_TAG1
+//EnvFromDrone is get env str from system and drone, e.g {{.TEMPLATE_TAG1}} -> TEMPLATE_TAG1 , PLUGIN_TEMPLATE_TAG1
 func EnvFromDrone() map[string]string {
 	var envMap map[string]string
 	envMap = make(map[string]string)
