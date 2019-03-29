@@ -1,11 +1,13 @@
 package config
 
 import (
-	"bufio"
+	"bytes"
+	"github.com/cuisongliu/drone-kube/tools"
 	"github.com/wonderivan/logger"
-	"io"
 	"io/ioutil"
 	"os"
+	"strings"
+	"text/template"
 )
 
 // KubeDeployDir is var
@@ -22,21 +24,32 @@ func Main() {
 		logger.Error("the dir is ", KubeDeployDir, ",empty.")
 		return
 	}
-	var innerFile *os.File
-	defer innerFile.Close()
+	var envMap map[string]string
+	envMap = tools.EnvFromDrone()
+	var fileForOpen *os.File
+	defer fileForOpen.Close()
 	for _, file := range files {
-		logger.Info("file name is :", file.Name())
-		innerFile, err := os.Open(KubeDeployDir + string(os.PathSeparator) + file.Name())
-		if nil == err {
-			buff := bufio.NewReader(innerFile)
-			for {
-				line, err := buff.ReadString('\n')
-				if err != nil || io.EOF == err {
-					break
-				}
-				logger.Debug("file line contant is :", line)
-			}
+		fileAllPath := KubeDeployDir + string(os.PathSeparator) + file.Name()
+		logger.Info("file path is :", fileAllPath)
+		fileContent, err := ioutil.ReadFile(fileAllPath)
+		if err != nil {
+			logger.Error("read file failed:", err)
+			return
 		}
+		if !strings.Contains(string(fileContent), "{{") || !strings.Contains(string(fileContent), "}}") {
+			//not need replace from template
+			logger.Warn("this file is not need replace from template")
+			return
+		}
+
+		tmpl, err := template.ParseFiles(fileAllPath)
+		if err != nil {
+			logger.Error("template parse failed:", err)
+			return
+		}
+		var buffer bytes.Buffer
+		_ = tmpl.Execute(&buffer, envMap)
+		_ = ioutil.WriteFile(fileAllPath, buffer.Bytes(), 0755)
 	}
 
 }

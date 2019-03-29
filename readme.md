@@ -73,6 +73,7 @@
 ## template
 
 > deploy dir is template. need replace env.
+> the support env prefix: *TEMPLATE_*
 
 ### command template 
 
@@ -84,12 +85,13 @@
 ### use docker  template
 
 ```bash
- docker run -ti --network=host -e CONTAINER_IMAGES1=alpine   cuisongliu/drone-kube bash 
+ docker run -ti --network=host -e TEMPLATE_IMAGES1=alpine   cuisongliu/drone-kube bash 
  drone-kube template --deploy=xxx
 ```
 
 ### use drone template 
 
+- drone script
 ```yaml
 - name: deploy-font
   image: cuisongliu/drone-kube
@@ -111,4 +113,30 @@
     - sleep 15
     - kubectl create -f deploy/deploy.yaml || true
     
+```
+
+- deploy script
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{.TEMPLATE_TAG1}}
+  labels:
+    app: {{.TEMPLATE_TAG1}}
+spec:
+  replicas: 1
+  template:
+    metadata:
+      name: {{.TEMPLATE_TAG1}}
+      labels:
+        app: {{.TEMPLATE_TAG1}}
+    spec:
+      containers:
+        - name: {{.TEMPLATE_TAG1}}
+          image: {{.TEMPLATE_TAG2}}
+          imagePullPolicy: IfNotPresent
+      restartPolicy: Always
+  selector:
+    matchLabels:
+      app: {{.TEMPLATE_TAG1}}
 ```
