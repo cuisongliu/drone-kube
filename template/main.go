@@ -51,6 +51,7 @@ func Main() {
 		}
 		var buffer bytes.Buffer
 		_ = tmpl.Execute(&buffer, envMap)
+		logger.Debug("template over:", buffer.String())
 		_ = ioutil.WriteFile(fileAllPath, buffer.Bytes(), 0755)
 		logger.Info("[LOOP_END]")
 	}
