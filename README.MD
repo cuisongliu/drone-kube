@@ -64,7 +64,7 @@
         kube_admin_key:
           from_secret: k8s-admin-key
       commands:
-        - drone-kube config  >> /dev/null
+        - drone-kube config  
         - kubectl delete -f deploy/deploy.yaml || true
         - sleep 15
         - kubectl create -f deploy/deploy.yaml || true
