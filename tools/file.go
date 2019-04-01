@@ -6,6 +6,7 @@ import (
 	"path/filepath"
 )
 
+//KubeConfigExists is kubernetes config file is exists.
 func KubeConfigExists() string {
 	var kubeDir = filepath.Join(homedir.HomeDir(), ".kube")
 	if !pathExists(kubeDir) {

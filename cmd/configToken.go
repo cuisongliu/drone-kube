@@ -15,7 +15,7 @@
 package cmd
 
 import (
-	"github.com/cuisongliu/drone-kube/configToken"
+	"github.com/cuisongliu/drone-kube/config/token"
 	"github.com/cuisongliu/drone-kube/tools"
 
 	"github.com/spf13/cobra"
@@ -26,7 +26,7 @@ var configTokenCmd = &cobra.Command{
 	Use:   "configToken",
 	Short: "config your kubernetes classpath for token",
 	Run: func(cmd *cobra.Command, args []string) {
-		configToken.Main()
+		token.Main()
 	},
 }
 
@@ -37,8 +37,8 @@ func init() {
 	kubeUser := tools.Env("KUBE_USER", "PLUGIN_USER", "PLUGIN_KUBE_USER")
 	kubeToken := tools.Env("KUBE_TOKEN", "PLUGIN_TOKEN", "PLUGIN_KUBE_TOKEN")
 
-	configTokenCmd.Flags().StringVarP(&configToken.KubeServer, "server", "s", kubeServer, "~/.kube/config  server")
-	configTokenCmd.Flags().StringVarP(&configToken.KubeUser, "user", "u", kubeUser, "~/.kube/config  user")
-	configTokenCmd.Flags().StringVarP(&configToken.KubeToken, "token", "t", kubeToken, "~/.kube/config  token")
+	configTokenCmd.Flags().StringVarP(&token.KubeServer, "server", "s", kubeServer, "~/.kube/config  server")
+	configTokenCmd.Flags().StringVarP(&token.KubeUser, "user", "u", kubeUser, "~/.kube/config  user")
+	configTokenCmd.Flags().StringVarP(&token.KubeToken, "token", "t", kubeToken, "~/.kube/config  token")
 
 }

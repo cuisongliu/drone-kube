@@ -1,4 +1,4 @@
-package configToken
+package token
 
 import (
 	"bytes"
