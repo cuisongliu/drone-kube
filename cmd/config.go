@@ -23,7 +23,7 @@ import (
 // configCmd represents the config command
 var configCmd = &cobra.Command{
 	Use:   "config",
-	Short: "config your kubernetes classpath",
+	Short: "config your kubernetes classpath for admin",
 	Run: func(cmd *cobra.Command, args []string) {
 		//cmd.Flags().StringVarP(&name, "name", "n", "", "person's name")
 		//cmd.Flags().IntVarP(&age, "age", "a", 0, "person's age")
@@ -34,10 +34,10 @@ var configCmd = &cobra.Command{
 func init() {
 	rootCmd.AddCommand(configCmd)
 
-	kubeServer := tools.Env("SERVER", "KUBE_SERVER", "PLUGIN_SERVER", "PLUGIN_KUBE_SERVER")
-	kubeCa := tools.Env("CA", "KUBE_CA", "PLUGIN_CA", "PLUGIN_KUBE_CA")
-	kubeAdmin := tools.Env("ADMIN", "KUBE_ADMIN", "PLUGIN_ADMIN", "PLUGIN_KUBE_ADMIN")
-	kubeAdminKey := tools.Env("ADMIN_KEY", "KUBE_ADMIN_KEY", "PLUGIN_ADMIN_KEY", "PLUGIN_KUBE_ADMIN_KEY")
+	kubeServer := tools.Env("KUBE_SERVER", "PLUGIN_SERVER", "PLUGIN_KUBE_SERVER")
+	kubeCa := tools.Env("KUBE_CA", "PLUGIN_CA", "PLUGIN_KUBE_CA")
+	kubeAdmin := tools.Env("KUBE_ADMIN", "PLUGIN_ADMIN", "PLUGIN_KUBE_ADMIN")
+	kubeAdminKey := tools.Env("KUBE_ADMIN_KEY", "PLUGIN_ADMIN_KEY", "PLUGIN_KUBE_ADMIN_KEY")
 
 	configCmd.Flags().StringVarP(&config.KubeServer, "server", "s", kubeServer, "~/.kube/config  server")
 	//certificate-authority ca.pem

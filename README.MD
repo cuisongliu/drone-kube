@@ -4,7 +4,7 @@
 
 ## config
 
-> config kubeconfig, from env generator /root/.kube/config ,the user controller k8s cluster
+> config admin kubeconfig, from env generator /root/.kube/config ,the user controller k8s cluster
 
 ### command generator 
 
@@ -22,10 +22,10 @@
 
 | describe | env |
 | :--- | :---  |  
-| ~/.kube/config  server | SERVER , KUBE_SERVER , PLUGIN_SERVER , PLUGIN_KUBE_SERVER|  
-| ~/.kube/config certificate-authority-data | CA, KUBE_CA, PLUGIN_CA, PLUGIN_KUBE_CA|  
-| ~/.kube/config client-certificate-data | ADMIN, KUBE_ADMIN, PLUGIN_ADMIN, PLUGIN_KUBE_ADMIN |  
-| ~/.kube/config client-key-data | ADMIN_KEY, KUBE_ADMIN_KEY, PLUGIN_ADMIN_KEY, PLUGIN_KUBE_ADMIN_KEY |  
+| ~/.kube/config  server | KUBE_SERVER , PLUGIN_SERVER , PLUGIN_KUBE_SERVER|  
+| ~/.kube/config certificate-authority-data | KUBE_CA, PLUGIN_CA, PLUGIN_KUBE_CA|  
+| ~/.kube/config client-certificate-data | KUBE_ADMIN, PLUGIN_ADMIN, PLUGIN_KUBE_ADMIN |  
+| ~/.kube/config client-key-data | KUBE_ADMIN_KEY, PLUGIN_ADMIN_KEY, PLUGIN_KUBE_ADMIN_KEY |  
 
 ### use drone generator 
 1. use no prefix classpath
@@ -65,6 +65,68 @@
           from_secret: k8s-admin-key
       commands:
         - drone-kube config  >> /dev/null
+        - kubectl delete -f deploy/deploy.yaml || true
+        - sleep 15
+        - kubectl create -f deploy/deploy.yaml || true
+    ```
+
+## configToken
+
+> config user kubeconfig, from env generator /root/.kube/config ,the user controller k8s cluster
+
+### command generator 
+
+```bash
+ drone-kube configToken  --token xxx  --user xxx  --server xxx
+```
+
+### use docker  generator
+
+```bash
+ docker run -ti --network=host -e KUBE_SERVER=https://xxx:6443  -e KUBE_USER=xxx    -e KUBE_TOKEN=xxx cuisongliu/drone-kube bash 
+ drone-kube configToken
+```
+
+| describe | env |
+| :--- | :---  |  
+| ~/.kube/config  server | KUBE_SERVER , PLUGIN_SERVER , PLUGIN_KUBE_SERVER|  
+| ~/.kube/config  token | KUBE_TOKEN, PLUGIN_TOKEN, PLUGIN_KUBE_TOKEN |  
+| ~/.kube/config  user | KUBE_USER, PLUGIN_USER, PLUGIN_KUBE_USER |  
+
+### use drone generator 
+1. use no prefix classpath
+    ```yaml
+    - name: deploy-font
+      image: cuisongliu/drone-kube
+      settings:
+        server:
+          from_secret: k8s-server
+        user:
+          from_secret: k8s-user
+        token:
+          from_secret: k8s-token
+      commands:
+        - drone-kube configToken  >> /dev/null
+        - kubectl delete -f deploy/deploy.yaml || true
+        - sleep 15
+        - kubectl create -f deploy/deploy.yaml || true
+        
+    ```
+
+2. use KUBE prefix classpath
+
+    ```yaml
+    - name: deploy-font
+      image: cuisongliu/drone-kube
+      settings:
+        kube_server:
+          from_secret: k8s-server
+        kube_user:
+          from_secret: k8s-user
+        kube_token:
+          from_secret: k8s-token
+      commands:
+        - drone-kube configToken  >> /dev/null
         - kubectl delete -f deploy/deploy.yaml || true
         - sleep 15
         - kubectl create -f deploy/deploy.yaml || true

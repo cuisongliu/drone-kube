@@ -1,4 +1,4 @@
-package config
+package configToken
 
 import (
 	"bytes"
@@ -11,31 +11,26 @@ import (
 var templateText = string(`apiVersion: v1
 clusters:
 - cluster:
-    certificate-authority-data: {{.KubeCa}}
     server: {{.KubeServer}}
   name: kubernetes
 contexts:
 - context:
     cluster: kubernetes
-    user: kubernetes-admin
-  name: kubernetes-admin@kubernetes
-current-context: kubernetes-admin@kubernetes
+    user: {{.KubeUser}}
+  name: {{.KubeUser}}
+current-context: {{.KubeUser}}
 kind: Config
 preferences: {}
 users:
-- name: kubernetes-admin
+- name: {{.KubeUser}}
   user:
-    client-certificate-data: {{.KubeAdmin}}
-    client-key-data: {{.KubeAdminKey}}
-`)
+    token: {{.KubeToken}}`)
 
 //var is global var
 var (
-	KubeCa     string
 	KubeServer string
-
-	KubeAdmin    string
-	KubeAdminKey string
+	KubeToken  string
+	KubeUser   string
 )
 
 //Main is config command
@@ -45,25 +40,20 @@ func Main() {
 		logger.Error("param server is null")
 		return
 	}
-	if KubeCa == "" {
-		logger.Error("param ca is null")
+	if KubeToken == "" {
+		logger.Error("param token is null")
 		return
 	}
-	if KubeAdmin == "" {
-		logger.Error("param admin is null")
-		return
-	}
-	if KubeAdminKey == "" {
-		logger.Error("param admin key is null")
+	if KubeUser == "" {
+		logger.Error("param user is null")
 		return
 	}
 	var kubeconfig = tools.KubeConfigExists()
 	var envMap = make(map[string]string, 4)
 	envMap["KubeServer"] = KubeServer
-	envMap["KubeCa"] = KubeCa
-	envMap["KubeAdmin"] = KubeAdmin
-	envMap["KubeAdminKey"] = KubeAdminKey
-	tmpl, err := template.New("config").Parse(templateText)
+	envMap["KubeUser"] = KubeUser
+	envMap["KubeToken"] = KubeToken
+	tmpl, err := template.New("configToken").Parse(templateText)
 	if err != nil {
 		logger.Error("template parse failed:", err)
 		return

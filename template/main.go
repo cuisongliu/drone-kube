@@ -26,8 +26,6 @@ func Main() {
 	}
 	var envMap map[string]string
 	envMap = tools.EnvFromDrone()
-	var fileForOpen *os.File
-	defer fileForOpen.Close()
 	for _, file := range files {
 		fileAllPath := KubeDeployDir + string(os.PathSeparator) + file.Name()
 		logger.Info("file path is :", fileAllPath)
@@ -41,7 +39,6 @@ func Main() {
 			logger.Warn("this file is not need replace from template")
 			return
 		}
-
 		tmpl, err := template.ParseFiles(fileAllPath)
 		if err != nil {
 			logger.Error("template parse failed:", err)
