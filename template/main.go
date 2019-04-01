@@ -28,7 +28,12 @@ func Main() {
 	envMap = tools.EnvFromDrone()
 	for _, file := range files {
 		fileAllPath := KubeDeployDir + string(os.PathSeparator) + file.Name()
-		logger.Info("file path is :", fileAllPath)
+		logger.Info("[LOOP_BEGIN]file path is :", fileAllPath)
+		if !strings.HasSuffix(file.Name(), "yaml") && !strings.HasSuffix(file.Name(), "yaml") {
+			logger.Warn("this file is not deploy file,the file must yaml/yml suffix")
+			continue
+		}
+
 		fileContent, err := ioutil.ReadFile(fileAllPath)
 		if err != nil {
 			logger.Warn("read file failed:", err)
@@ -47,6 +52,7 @@ func Main() {
 		var buffer bytes.Buffer
 		_ = tmpl.Execute(&buffer, envMap)
 		_ = ioutil.WriteFile(fileAllPath, buffer.Bytes(), 0755)
+		logger.Info("[LOOP_END]")
 	}
 
 }
