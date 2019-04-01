@@ -31,18 +31,18 @@ func Main() {
 		logger.Info("file path is :", fileAllPath)
 		fileContent, err := ioutil.ReadFile(fileAllPath)
 		if err != nil {
-			logger.Error("read file failed:", err)
-			return
+			logger.Warn("read file failed:", err)
+			continue
 		}
 		if !strings.Contains(string(fileContent), "{{") || !strings.Contains(string(fileContent), "}}") {
 			//not need replace from template
 			logger.Warn("this file is not need replace from template")
-			return
+			continue
 		}
 		tmpl, err := template.ParseFiles(fileAllPath)
 		if err != nil {
-			logger.Error("template parse failed:", err)
-			return
+			logger.Warn("template parse failed:", err)
+			continue
 		}
 		var buffer bytes.Buffer
 		_ = tmpl.Execute(&buffer, envMap)
