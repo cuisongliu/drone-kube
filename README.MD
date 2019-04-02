@@ -134,7 +134,7 @@
 
 ## template
 
-> deploy dir is template file,the file suffix is **yaml.tmpl** or **yml.tmpl** . need replace env.
+> deploy dir is template file,the file suffix is **yaml.tmpl** or **yml.tmpl** . need replace env. the files name auto rename to .yaml/.yml.
 > the support env prefix: *TEMPLATE_*
 
 ### command template 
@@ -177,7 +177,7 @@
     
 ```
 
-- deploy script
+- deploy script deploy/deploy.yaml.tmpl
 ```yaml
 apiVersion: apps/v1
 kind: Deployment
