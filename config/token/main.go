@@ -11,6 +11,7 @@ import (
 var templateText = string(`apiVersion: v1
 clusters:
 - cluster:
+    insecure-skip-tls-verify: true
     server: {{.KubeServer}}
   name: kubernetes
 contexts:
