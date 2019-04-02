@@ -29,8 +29,8 @@ func Main() {
 	for _, file := range files {
 		fileAllPath := KubeDeployDir + string(os.PathSeparator) + file.Name()
 		logger.Info("[LOOP_BEGIN]file path is :", fileAllPath)
-		if !strings.HasSuffix(file.Name(), "yaml") && !strings.HasSuffix(file.Name(), "yaml") {
-			logger.Warn("this file is not deploy file,the file must yaml/yml suffix")
+		if !strings.HasSuffix(file.Name(), "yaml.tmpl") && !strings.HasSuffix(file.Name(), "yml.tmpl") {
+			logger.Warn("this file is not deploy file,the file must yaml.tmpl/yml.tmpl suffix")
 			continue
 		}
 
